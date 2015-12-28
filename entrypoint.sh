@@ -7,7 +7,6 @@ set -euo pipefail
 MISSING=""
 
 [ -z "${DOMAIN}" ] && MISSING="${MISSING} DOMAIN"
-[ -z "${UPSTREAM}" ] && MISSING="${MISSING} UPSTREAM"
 [ -z "${EMAIL}" ] && MISSING="${MISSING} EMAIL"
 
 if [ "${MISSING}" != "" ]; then
@@ -15,11 +14,6 @@ if [ "${MISSING}" != "" ]; then
   echo " ${MISSING}" >&2
   exit 1
 fi
-
-# Default other parameters
-
-SERVER=""
-[ -n "${STAGING:-}" ] && SERVER="--server https://acme-staging.api.letsencrypt.org/directory"
 
 # Generate strong DH parameters for nginx, if they don't already exist.
 [ -f /etc/ssl/dhparams.pem ] || openssl dhparam -out /etc/ssl/dhparams.pem 2048
