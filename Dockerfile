@@ -1,5 +1,5 @@
-FROM alpine:3.2
-MAINTAINER Ash Wilson <smashwilson@gmail.com>
+FROM gliderlabs/alpine
+MAINTAINER Patrick Heneise <patrick@blended.io>
 
 RUN apk add --update nginx \
   python python-dev py-pip \
@@ -12,9 +12,6 @@ RUN pip install -U letsencrypt
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
-
-# used for webroot reauth
-RUN mkdir -p /etc/letsencrypt/webrootauth
 
 ADD entrypoint.sh /entrypoint.sh
 
