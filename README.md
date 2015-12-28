@@ -6,6 +6,7 @@ Put browser-valid TLS termination in front of any Dockerized HTTP service with o
 
 ```bash
 docker run --detach \
+  --net=host \
   --name lets-nginx \
   --env EMAIL=me@email.com \
   --env DOMAIN=mydomain.horse \
