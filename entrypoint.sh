@@ -20,7 +20,6 @@ fi
 
 # Template an nginx.conf
 cat <<EOF >/etc/nginx/nginx.conf
-user nobody;
 worker_processes 2;
 
 events {
@@ -35,14 +34,15 @@ http {
   types_hash_max_size 2048;
 
   server {
-    listen [::]:80 default_server ipv6only=on;
-    listen 80 default_server;
-    return 301 https://$host$request_uri;
+    listen [::]:80 ipv6only=on;
+    server_name "${DOMAIN}";
+    return 301 https://\$server_name\$request_uri;
   }
 
   server {
-    listen 443 ssl default_server;
-    listen [::]:443 ssl default_server ipv6only=on;
+    listen 443 ssl;
+    listen [::]:443 ssl ipv6only=on;
+    server_name "${DOMAIN}";
 
     ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
@@ -60,18 +60,11 @@ http {
     location / {
       proxy_pass http://127.0.0.1:3000;
       proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Upgrade \$http_upgrade;
       proxy_set_header Connection 'upgrade';
-      proxy_set_header Host $host;
-      proxy_cache_bypass $http_upgrade;
+      proxy_set_header Host \$host;
+      proxy_cache_bypass \$http_upgrade;
     }
-  }
-
-  # Redirect from port 80 to port 443
-  server {
-    listen 80;
-    server_name "${DOMAIN}";
-    return 301 https://\$server_name\$request_uri;
   }
 }
 EOF
