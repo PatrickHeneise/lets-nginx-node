@@ -1,6 +1,6 @@
 # Let's Nginx
 
-[![Docker Repository on Quay](https://quay.io/repository/patrickheneise/lets-nginx/status "Docker Repository on Quay")](https://quay.io/repository/patrickheneise/lets-nginx)
+[![Docker Repository on Quay](https://quay.io/repository/patrickheneise/lets-nginx-node/status "Docker Repository on Quay")](https://quay.io/repository/patrickheneise/lets-nginx-node)
 
 Put browser-valid TLS termination in front of any Dockerized HTTP service with one command.
 
@@ -10,7 +10,7 @@ docker run --detach \
   --name lets-nginx \
   --env EMAIL=me@email.com \
   --env DOMAIN=mydomain.horse \
-  quay.io/patrickheneise/lets-nginx
+  quay.io/patrickheneise/lets-nginx-node
 ```
 
 Issues certificates from [letsencrypt](https://letsencrypt.org/), installs them in [nginx](https://www.nginx.com/), and schedules a cron job to reissue them monthly.
